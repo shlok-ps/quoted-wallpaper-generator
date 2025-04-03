@@ -1,7 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
 
-def add_text_to_image(image_path, text, width, font_path, font_size):
+def add_text_to_image(image_path, text, width, font_path, font_size, subtitle):
     # Open the image
     image = Image.open(image_path)
     draw = ImageDraw.Draw(image)
@@ -21,7 +21,7 @@ def add_text_to_image(image_path, text, width, font_path, font_size):
     for line in lines:
         # draw.text((x, y), line, font=font, fill="black")
         # dray text at the center of the image
-        text_width, text_height = font.getbbox(line)[2:]  # Extract width and height
+        text_width = font.getbbox(line)[2]  # Extract width and height
         # AttributeError: 'ImageDraw' object has no attribute 'textsize'
         # Calculate x, y position for the text
         x_pos = (image.width - text_width) / 2
@@ -32,6 +32,9 @@ def add_text_to_image(image_path, text, width, font_path, font_size):
     
     # Save or show the image
     #image.show()
+    subTitleWidth = font.getbbox(subtitle)[2]  # Extract width and height
+    subTitleX = (image.width - subTitleWidth) / 2
+    draw.text((subTitleX, image.height-350), subtitle, font=font, fill="white")
     return image
 
 def bulkProcess():
@@ -48,7 +51,8 @@ def bulkProcess():
                 text=text,
                 width=40,  # Number of characters per line
                 font_path='assets/times.ttf',
-                font_size=48
+                font_size=48, 
+                subtitle="ROBERT GREENE"
             )
             image.save(f"assets/outputs/{i}.png")
         # Save the last image
