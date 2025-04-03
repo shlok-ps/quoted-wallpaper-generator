@@ -1,7 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
 
-def add_text_to_image(image_path, text, x, y, width, font_path, font_size):
+def add_text_to_image(image_path, text, width, font_path, font_size):
     # Open the image
     image = Image.open(image_path)
     draw = ImageDraw.Draw(image)
@@ -12,8 +12,6 @@ def add_text_to_image(image_path, text, x, y, width, font_path, font_size):
     # Wrap the text
     lines = textwrap.wrap(text, width=width)
     
-    # Set initial y position to be center of the image
-    # y = (image.height - len(lines) * font.getsize(text)[1]) / 2
     # Calculate the total height of the text block
     total_height = sum(font.getbbox(line)[3] for line in lines)
     # Center the text block vertically
@@ -36,36 +34,23 @@ def add_text_to_image(image_path, text, x, y, width, font_path, font_size):
     #image.show()
     return image
 
-image = add_text_to_image(
-    image_path='../assets/base.png',
-    text='This is a sample text that will be wrapped and drawn on the image.',
-    x=50,
-    y=50,
-    width=52,  # Number of characters per line
-    font_path='../assets/times.ttf',
-    font_size=48
-)
-image.save("../assets/output.png")
-
 def bulkProcess():
     # Bulk Process New Texts with the same Base Image
     #Pick texts from external text file
-    with open('../assets/texts.txt', 'r') as file:
+    with open('assets/texts.txt', 'r') as file:
         texts = file.readlines()
         # Remove newline characters
         texts = [text.strip() for text in texts]
 
         for i, text in enumerate(texts):    
             image = add_text_to_image(
-                image_path='../assets/base.png',
+                image_path='assets/base.png',
                 text=text,
-                x=50,
-                y=50,
-                width=52,  # Number of characters per line
-                font_path='../assets/times.ttf',
+                width=40,  # Number of characters per line
+                font_path='assets/times.ttf',
                 font_size=48
             )
-            image.save(f"../assets/outputs/{i}.png")
+            image.save(f"assets/outputs/{i}.png")
         # Save the last image
 
 if(__name__=="__main__"):
